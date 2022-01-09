@@ -7,7 +7,7 @@ Quickly declare your Gutenberg blocks with ACF and WordPlate Extended ACF
 The package requires the following plugins:
 
 - Advanced Custom Fields Pro
-- Wordplate Extended ACF (included in the ACF Blocks package)
+- WordPlate Extended ACF (included in the ACF Blocks package)
 
 ## Installation
 
