@@ -97,9 +97,33 @@ class Block {
                 if ($this->loadAllField) {
                     $viewArgs['field'] = (object) get_fields();
                 }
-                echo view($this->renderTemplate, $viewArgs);
+
+                $this->render($this->renderTemplate, $viewArgs);
             },
         ]);
+    }
+
+    /**
+     * Render the template
+     * @param string $tpl Template file or view path
+     * @param array $args View arguments
+     * @return void
+     */
+    public function render(string $tpl = '', array $args = [])
+    {
+        $tpl = str_replace(['.blade.php'], '', $tpl);
+
+        if (function_exists('view') && view()->exists($tpl)) {
+            echo view($tpl, $args);
+            return;
+        }
+
+        $locatedTemplate = locate_template($tpl, false, false, $args);
+
+        if ($locatedTemplate) {
+            extract($args);
+            include($locatedTemplate);
+        }
     }
 
     /**
@@ -391,7 +415,7 @@ class Block {
 
     /**
      * Set the render template
-     * @param string $renderTemplate Path to the render template (blade path)
+     * @param string $renderTemplate Path to the render template
      * @return $this
      */
     public function setRenderTemplate(string $renderTemplate): self
@@ -401,12 +425,32 @@ class Block {
     }
 
     /**
-     * Get the render template (blade path)
+     * Shortcut for setRenderTemplate (More Blade friendly)
+     * @param string $renderTemplate Path to the render template (blade path)
+     * @return $this
+     */
+    public function setView(string $view): self
+    {
+        $this->setRenderTemplate($view);
+        return $this;
+    }
+
+    /**
+     * Get the render template
      * @return string
      */
     public function getRenderTemplate(): string
     {
         return $this->renderTemplate;
+    }
+
+    /**
+     * Shortcut for getRenderTemplate (More Blade friendly)
+     * @return string
+     */
+    public function getView(): string
+    {
+        return $this->getRenderTemplate();
     }
 
     /**

@@ -50,10 +50,41 @@ Block::make('My beautiful block', 'my_beautiful_block')
     ->setIcon('format-aside')
     ->setAlign('full')
     ->enableJsx()
-    ->setRenderTemplate('partials.my-beautiful-block');
+    ->setRenderTemplate('partials/my-beautiful-block.php');
+```
+
+ACF Blocks is also compatible with Blade views !
+
+```php
+use \AmphiBee\AcfBlocks\Block;
+use \WordPlate\Acf\Fields\Text;
+use \WordPlate\Acf\Fields\Textarea;
+
+Block::make('My beautiful block', 'my_beautiful_block')
+    ->setFields([
+        \WordPlate\Acf\Fields\Text::make('Title', 'title'),
+        \WordPlate\Acf\Fields\Textarea::make('Content', 'content'),
+    ])
+    ->setMode('preview')
+    ->setIcon('editor-code')
+    ->setAlign('wide')
+    ->enableJsx()
+    ->setView('partials.my-beautiful-block');
 ```
 
 ### Rendering a block
+
+**Raw PHP template**
+
+```php
+<div class="p-4">
+    <h1><?php echo $field->title; ?></h1>
+    <p><?php echo $field->content; ?></p>
+    <?php echo $innerBlocks ?>
+</div>
+```
+
+**Blade view**
 
 ```php
 <div class="p-4">
@@ -61,3 +92,4 @@ Block::make('My beautiful block', 'my_beautiful_block')
     <p>{{$field->content}}</p>
     {!! $innerBlocks !!}
 </div>
+```
