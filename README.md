@@ -28,8 +28,8 @@ use \WordPlate\Acf\Fields\Textarea;
 
 Block::make('My beautiful block', 'my_beautiful_block')
     ->setFields([
-        \WordPlate\Acf\Fields\Text::make('Title', 'title'),
-        \WordPlate\Acf\Fields\Textarea::make('Content', 'content'),
+        Text::make('Title', 'title'),
+        Textarea::make('Content', 'content'),
     ])
     ->disableCustomClasseName()
     ->setAllowedBlocks([
