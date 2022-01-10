@@ -22,6 +22,10 @@ class Block {
     protected $enqueueScript;
     protected $enqueueStyle;
     protected $supports = [];
+    protected $example = [];
+    protected $jsxTemplate = [];
+    protected $allowedBlocks = [];
+    protected $templateLock;
 
     public function __construct(string $title, ?string $name = null)
     {
@@ -69,8 +73,29 @@ class Block {
                     'instance' => $this,
                 ];
 
+                $viewArgs['innerBlocks'] = '';
+
+                if ($this->getSupport('jsx')) {
+                    $innerBlockAttrs = '';
+                    if (count($this->jsxTemplate) > 0) {
+                        $viewArgs['template_attr'] = ' template="' . esc_attr( wp_json_encode( $this->jsxTemplate ) ) . '"';
+                        $innerBlockAttrs .= $viewArgs['template_attr'];
+                    }
+
+                    if (count($this->allowedBlocks) > 0) {
+                        $viewArgs['allowed_block_attr'] = ' allowedBlocks="' . esc_attr( wp_json_encode( $this->allowedBlocks ) ) . '"';
+                        $innerBlockAttrs .= $viewArgs['allowed_block_attr'];
+                    }
+
+                    if ($this->templateLock) {
+                        $viewArgs['template_lock_attr'] = ' templateLock="' . $this->templateLock . '"';
+                        $innerBlockAttrs .= $viewArgs['template_lock_attr'];
+                    }
+                    $viewArgs['innerBlocks'] = "<InnerBlocks{$innerBlockAttrs} />";
+                }
+
                 if ($this->loadAllField) {
-                    $viewArgs['fields'] = (object) get_fields();
+                    $viewArgs['field'] = (object) get_fields();
                 }
                 echo view($this->renderTemplate, $viewArgs);
             },
@@ -365,7 +390,30 @@ class Block {
     }
 
     /**
-     * @param array $supports An array of features to support. All properties from the JavaScript block supports documentation may be used. See https://www.advancedcustomfields.com/resources/acf_register_block_type/
+     * Set the render template
+     * @param string $renderTemplate Path to the render template (blade path)
+     * @return $this
+     */
+    public function setRenderTemplate(string $renderTemplate): self
+    {
+        $this->renderTemplate = $renderTemplate;
+        return $this;
+    }
+
+    /**
+     * Get the render template (blade path)
+     * @return string
+     */
+    public function getRenderTemplate(): string
+    {
+        return $this->renderTemplate;
+    }
+
+    /**
+     * @param array $supports An array of features to support.
+     * All properties from the JavaScript block supports
+     * documentation may be used.
+     * See https://www.advancedcustomfields.com/resources/acf_register_block_type/
      * @return $this
      */
     public function setSupports(array $supports): self
@@ -381,6 +429,150 @@ class Block {
     public function getSupports(): array
     {
         return $this->supports;
+    }
+
+    /**
+     * This disables the toolbar button to control the block’s
+     * alignment.
+     * @return $this
+     */
+    public function disableAlign(): self
+    {
+        $this->supports['align'] = false;
+        return $this;
+    }
+
+    /**
+     * Customize alignment toolbar
+     * @param array $alignSupport
+     * @return $this
+     */
+    public function setAlignSupport(array $alignSupport): self
+    {
+        $this->supports['align'] = $alignSupport;
+        return $this;
+    }
+
+    /**
+     * This property enables a toolbar button to control the block's
+     * text alignment
+     * @return $this
+     */
+    public function enableAlignText(): self
+    {
+        $this->supports['align_text'] = true;
+        return $this;
+    }
+
+    /**
+     * This method enables a toolbar button to control the block's
+     * inner content alignment
+     * @return $this
+     */
+    public function enableAlignContent(): self
+    {
+        $this->supports['align_content'] = true;
+        return $this;
+    }
+
+    /**
+     * This method control the block's inner content alignment.
+     * Set to true to show the alignment toolbar button, or set
+     * to 'matrix' to enable the full alignment matrix in the toolbar
+     * @param mixed $setting
+     * @return $this
+     */
+    public function setAlignContentSupport($setting): self
+    {
+        $this->supports['align_content'] = $setting;
+        return $this;
+    }
+
+    /**
+     * This method enables the full height button on the toolbar of a
+     * block and adds the $block[‘full_height’] property inside the
+     * render template/callback. $block[‘full_height’] will only be
+     * true if the full height button is enabled on the block in
+     * the editor
+     * @return $this
+     */
+    public function enableFullHeight(): self
+    {
+        $this->supports['full_height'] = true;
+        return $this;
+    }
+
+    /**
+     * This method disable the toggle between edit and preview modes
+     * @return $this
+     */
+    public function disableMode(): self
+    {
+        $this->supports['mode'] = false;
+        return $this;
+    }
+
+    /**
+     * Disable the block custom class names
+     * @return $this
+     */
+    public function disableCustomClasseName(): self
+    {
+        $this->supports['customClassName'] = false;
+        return $this;
+    }
+
+    /**
+     * Enable Anchor
+     * @return $this
+     */
+    public function enableAnchor(): self
+    {
+        $this->supports['anchor'] = true;
+        return $this;
+    }
+
+    /**
+     * Enable JSX support
+     * @return $this
+     */
+    public function enableJsx(): self
+    {
+        $this->supports['jsx'] = true;
+        return $this;
+    }
+
+    /**
+     * Set the InnerBlock template
+     * @param array $template Array of blocks. See https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates/
+     * @return $this
+     */
+    public function setJsxTemplate(array $template): self
+    {
+        $this->jsxTemplate = $template;
+        return $this;
+    }
+
+    /**
+     * Set the InnerBlock allowed blocks
+     * @param array $allowedBlocks Array of blocks
+     * @return $this
+     */
+    public function setAllowedBlocks(array $allowedBlocks): self
+    {
+        $this->allowedBlocks = $allowedBlocks;
+        return $this;
+    }
+
+    /**
+     * Set the InnerBlock template lock settings
+     * @param array $templateLock InnerBlock template lock settings (possible value : all|insert|move|delete)
+     * @return $this
+     */
+    public function setTemplateLock($templateLock): self
+    {
+        $this->templateLock = $templateLock;
+        return $this;
     }
 
     /**
@@ -406,28 +598,28 @@ class Block {
     }
 
     /**
-     * Set the render template
-     * @param string $renderTemplate Path to the render template (blade path)
+     * An array of structured data used to construct a preview shown
+     * within the block-inserter. All values entered into the ‘data’
+     * attribute array will become available within the block render
+     * template/callback via $block['data'] or get_field().
+     * @param array $example
      * @return $this
      */
-    public function setRenderTemplate(string $renderTemplate): self
+    public function setExample(array $example): self
     {
-        $this->renderTemplate = $renderTemplate;
+        $this->example = $example;
         return $this;
     }
 
-    /**
-     * Get the render template (blade path)
-     * @return string
-     */
-    public function getRenderTemplate(): string
+    public function getExample(): array
     {
-        return $this->renderTemplate;
+        return $this->example;
     }
 
     /**
      * Set the block fields
-     * @param array $fields Array of fields declared via WordPlate Extended ACF library
+     * @param array $fields Array of fields declared via
+     * WordPlate Extended ACF library
      * @return $this
      */
     public function setFields(array $fields): self
