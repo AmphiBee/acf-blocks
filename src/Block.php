@@ -1,9 +1,11 @@
 <?php
+
 namespace AmphiBee\AcfBlocks;
 
 use WordPlate\Acf\Location;
 
-class Block {
+class Block
+{
 
     protected $name;
     protected $title;
@@ -29,7 +31,7 @@ class Block {
 
     public function __construct(string $title, ?string $name = null)
     {
-        $this->setName($name ?? str_replace('\\', '-', strtolower(get_class($this))) . '-' .  acf_slugify($title));
+        $this->setName($name ?? str_replace('\\', '-', strtolower(get_class($this))) . '-' . acf_slugify($title));
         $this->setTitle($title);
 
         add_action('acf/init', [$this, 'registerBlock']);
@@ -56,6 +58,7 @@ class Block {
         acf_register_block_type([
             'title' => $this->getTitle(),
             'name' => $this->getName(),
+            'category' => $this->getCategory(),
             'icon' => $this->getIcon(),
             'post_types' => $this->getPostTypes(),
             'mode' => $this->getMode(),
@@ -66,7 +69,7 @@ class Block {
             'enqueue_style' => $this->getEnqueueStyle(),
             'supports' => $this->getSupports(),
             'keywords' => $this->getKeywords(),
-            'render_callback' => function($block) {
+            'render_callback' => function ($block) {
 
                 $viewArgs = [
                     'block' => $block,
@@ -78,12 +81,12 @@ class Block {
                 if ($this->getSupport('jsx')) {
                     $innerBlockAttrs = '';
                     if (count($this->jsxTemplate) > 0) {
-                        $viewArgs['template_attr'] = ' template="' . esc_attr( wp_json_encode( $this->jsxTemplate ) ) . '"';
+                        $viewArgs['template_attr'] = ' template="' . esc_attr(wp_json_encode($this->jsxTemplate)) . '"';
                         $innerBlockAttrs .= $viewArgs['template_attr'];
                     }
 
                     if (count($this->allowedBlocks) > 0) {
-                        $viewArgs['allowed_block_attr'] = ' allowedBlocks="' . esc_attr( wp_json_encode( $this->allowedBlocks ) ) . '"';
+                        $viewArgs['allowed_block_attr'] = ' allowedBlocks="' . esc_attr(wp_json_encode($this->allowedBlocks)) . '"';
                         $innerBlockAttrs .= $viewArgs['allowed_block_attr'];
                     }
 
@@ -95,7 +98,7 @@ class Block {
                 }
 
                 if ($this->loadAllField) {
-                    $viewArgs['field'] = (object) get_fields();
+                    $viewArgs['field'] = (object)get_fields();
                 }
 
                 $this->render($this->renderTemplate, $viewArgs);
@@ -155,7 +158,7 @@ class Block {
 
     /**
      * Name of the block
-     * @param string $name  A unique name that identifies the block (without namespace
+     * @param string $name A unique name that identifies the block (without namespace
      * @return $this
      */
     public function setName(string $name): self
@@ -225,7 +228,7 @@ class Block {
     }
 
     /**
-     * Set the block category
+     * Get the block category
      * @return string
      */
     public function getCategory(): string
@@ -234,7 +237,7 @@ class Block {
     }
 
     /**
-     * Set the block icon
+     * Get the block icon
      * @return string The icon for your block
      */
     public function getIcon(): string
@@ -265,7 +268,7 @@ class Block {
     }
 
     /**
-     * Set the block keywords
+     * Get the block keywords
      * @return array
      */
     public function getKeywords(): array
