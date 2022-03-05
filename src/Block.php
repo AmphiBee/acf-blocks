@@ -10,7 +10,7 @@ class Block
     protected $name;
     protected $title;
     protected $description;
-    protected $category;
+    protected $category = '';
     protected $icon = '';
     protected $keywords = [];
     protected $fields;
@@ -118,6 +118,10 @@ class Block
 
         if (function_exists('view') && view()->exists($tpl)) {
             echo view($tpl, $args);
+            return;
+        }
+        if (function_exists('\Roots\view') && \Roots\view()->exists($tpl)) {
+            echo \Roots\view($tpl, $args);
             return;
         }
 
