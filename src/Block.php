@@ -645,7 +645,7 @@ class Block
      */
     public function getSupport(string $key)
     {
-        return $this->supports[$key];
+        return isset($this->supports[$key]) ? $this->supports[$key] : null;
     }
 
     /**
