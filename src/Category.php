@@ -9,6 +9,7 @@ class Category
 
     protected $name;
     protected $title;
+    protected $icon = '';
 
     public function __construct(string $title, ?string $name = null)
     {
@@ -38,6 +39,7 @@ class Category
         $new_category = [
             'title' => $this->getTitle(),
             'slug' => $this->getName(),
+            'icon' => $this->getIcon(),
         ];
         array_unshift($categories, $new_category);
 
@@ -82,5 +84,25 @@ class Category
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * Set the category icon
+     * @param string $icon The icon for your category
+     * @return $this
+     */
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+    
+    /**
+     * Get the category icon
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->icon;
     }
 }

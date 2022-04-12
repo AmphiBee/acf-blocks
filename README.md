@@ -93,3 +93,12 @@ Block::make('My beautiful block', 'my_beautiful_block')
     {!! $innerBlocks !!}
 </div>
 ```
+
+### Declaring a category
+
+```php
+use \AmphiBee\AcfBlocks\Category;
+
+Category::make('My beautiful category', 'my_beautiful_category')
+    ->setIcon('wordpress')
+```
