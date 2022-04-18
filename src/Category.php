@@ -4,7 +4,7 @@ namespace AmphiBee\AcfBlocks;
 
 use WordPlate\Acf\Location;
 
-class Category
+class BlockCategory
 {
 
     protected $name;
