@@ -97,8 +97,8 @@ Block::make('My beautiful block', 'my_beautiful_block')
 ### Declaring a category
 
 ```php
-use \AmphiBee\AcfBlocks\Category;
+use \AmphiBee\AcfBlocks\BlockCategory;
 
-Category::make('My beautiful category', 'my_beautiful_category')
+BlockCategory::make('My beautiful category', 'my_beautiful_category')
     ->setIcon('wordpress')
 ```
