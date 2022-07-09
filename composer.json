@@ -3,7 +3,7 @@
     "description": "Provide abstracted class to help build ACF-based Gutenberg Blocks",
     "type": "library",
     "require": {
-        "wordplate/acf": "^11.2",
+        "wordplate/acf": "^13.0",
         "php": "^7.4 || ^8.0"
     },
     "require-dev": {
