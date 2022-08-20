@@ -2,7 +2,7 @@
 
 namespace AmphiBee\AcfBlocks;
 
-use WordPlate\Acf\Location;
+use Extended\ACF\Location;
 
 class Block
 {
@@ -144,7 +144,7 @@ class Block
             register_extended_field_group([
                 'title' => $this->getTitle(),
                 'fields' => $this->getFields(),
-                'location' => [Location::if('block', 'acf/' . $name)],
+                'location' => [Location::where('block', 'acf/' . $name)],
             ]);
         }
     }

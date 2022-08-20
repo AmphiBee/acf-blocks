@@ -23,8 +23,8 @@ composer require amphibee/acf-blocks
 
 ```php
 use \AmphiBee\AcfBlocks\Block;
-use \WordPlate\Acf\Fields\Text;
-use \WordPlate\Acf\Fields\Textarea;
+use \Extended\ACF\Fields\Text;
+use \Extended\ACF\Fields\Textarea;
 
 Block::make('My beautiful block', 'my_beautiful_block')
     ->setFields([
@@ -57,13 +57,13 @@ ACF Blocks is also compatible with Blade views !
 
 ```php
 use \AmphiBee\AcfBlocks\Block;
-use \WordPlate\Acf\Fields\Text;
-use \WordPlate\Acf\Fields\Textarea;
+use \Extended\ACF\Fields\Text;
+use \Extended\ACF\Fields\Textarea;
 
 Block::make('My beautiful block', 'my_beautiful_block')
     ->setFields([
-        \WordPlate\Acf\Fields\Text::make('Title', 'title'),
-        \WordPlate\Acf\Fields\Textarea::make('Content', 'content'),
+        \Extended\ACF\Fields\Text::make('Title', 'title'),
+        \Extended\ACF\Fields\Textarea::make('Content', 'content'),
     ])
     ->setMode('preview')
     ->setIcon('editor-code')

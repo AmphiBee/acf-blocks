@@ -2,8 +2,6 @@
 
 namespace AmphiBee\AcfBlocks;
 
-use WordPlate\Acf\Location;
-
 class BlockCategory
 {
 
