@@ -69,7 +69,9 @@ Block::make('My beautiful block', 'my_beautiful_block')
     ->setIcon('editor-code')
     ->setAlign('wide')
     ->enableJsx()
-    ->setView('partials.my-beautiful-block');
+    ->setView('partials.my-beautiful-block', [
+        'key' => 'value',
+    ]);
 ```
 
 ### Rendering a block
@@ -78,6 +80,7 @@ Block::make('My beautiful block', 'my_beautiful_block')
 
 ```php
 <div class="p-4">
+    <?php var_dump($viewData); ?>
     <h1><?php echo $field->title; ?></h1>
     <p><?php echo $field->content; ?></p>
     <?php echo $innerBlocks ?>
@@ -90,6 +93,7 @@ Block::make('My beautiful block', 'my_beautiful_block')
 <div class="p-4">
     <h1>{{$field->title}}</h1>
     <p>{{$field->content}}</p>
+    <p>{{$viewData['key']}}</p>
     {!! $innerBlocks !!}
 </div>
 ```

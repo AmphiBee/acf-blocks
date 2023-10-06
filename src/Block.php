@@ -71,6 +71,7 @@ class Block
                 $viewArgs = [
                     'block' => $block,
                     'instance' => $this,
+                    'viewData' => $this->getViewData(),
                 ];
 
                 $viewArgs['innerBlocks'] = '';
