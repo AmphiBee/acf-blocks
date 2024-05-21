@@ -3,7 +3,7 @@
     "description": "Provide abstracted class to help build ACF-based Gutenberg Blocks",
     "type": "library",
     "require": {
-        "vinkla/extended-acf": "^13.1",
+        "vinkla/extended-acf": "^14.0",
         "php": "^7.4 || ^8.0"
     },
     "require-dev": {
